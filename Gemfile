@@ -69,7 +69,7 @@ gem 'elektron', git: 'https://github.com/sapcc/elektron'
 
 #gem 'misty', git: 'https://github.com/sapcc/misty.git', branch: 'master'
 #gem 'misty', path: '../misty'
-gem 'misty-cc', git: 'https://github.com/sapcc/misty-cc.git'
+gem 'misty-cc', git: 'https://github.com/sapcc/misty-cc.git', branch: :maia_integration 
 #gem 'misty-cc', path: '../misty-cc'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

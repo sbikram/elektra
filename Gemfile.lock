@@ -4,7 +4,14 @@ GIT
   branch: master
   specs:
     elektra-extension (0.0.1)
-      config
+
+GIT
+  remote: https://github.com/flystack/misty.git
+  revision: 445caa53f5ef77f9bc33df095bcfb2eca7682fb1
+  branch: master
+  specs:
+    misty (1.1.0)
+      json (>= 1.8.3, < 3)
 
 GIT
   remote: https://github.com/sapcc/arc-client.git
