@@ -3,12 +3,16 @@
 
 :javascript
 
-  var metric_ids = ['cpu_usage_average','mem_usage_average'];
+  var metric_defs = [
+    {'id':'cpu_usage_average','xaxis':'%'},
+    {'id':'mem_usage_average','xaxis':'%'}
+  ];
+  
   $(function(){
     $('a[aria-controls=metric]').click(function(){
       // cleanup
-      $.each(metric_ids, function( index, metric_id ) {
-        compute.clear_graph(metric_id);
+      $.each(metric_defs, function( index, metric_def ) {
+        compute.clear_graph(metric_def['id']);
       });
       $('#metric').addClass('loading-spinner');
       $.get( "#{plugin('metrics').server_statistics_path()}", {
@@ -16,18 +20,20 @@
       },function(data,status,xhr) {
         $('#metric').removeClass('loading-spinner');
         // render metrics
-        $.each(metric_ids, function( index, metric_id ) {
-          compute.render_graph(metric_id,data[metric_id]);
+        $.each(metric_defs, function( index, metric_def ) {
+          compute.render_graph(
+            metric_def['id'],
+            data[metric_def['id']],
+            metric_def['xaxis']
+          );
         });
       }).error (function(xhr) {
         $('#metric').removeClass('loading-spinner')
         // cleanup and render no data message
-        $.each(metric_ids, function( index, metric_id ) {
-          compute.clear_graph(metric_id);
-          compute.no_data(metric_id);
+        $.each(metric_defs, function( index, metric_def ) {
+          compute.clear_graph(metric_def['id']);
+          compute.no_data(metric_def['id']);
         });
       });
     });
   });
-
-

@@ -16,8 +16,8 @@ compute.clear_graph = function(ID) {
     $('#'+ID).empty();
 };
 
-compute.render_graph = function(ID,DATA) {
-    
+compute.render_graph = function(ID,DATA,XLABEL = "") {
+  
   // check that we have a valid data object
   if(typeof(DATA) != "object") {
     compute.no_data(ID);
@@ -30,13 +30,20 @@ compute.render_graph = function(ID,DATA) {
                   .x(function(d) { return d[0] })
                   .y(function(d) { return parseInt(d[1]) })
                   .useInteractiveGuideline(true); 
+     
      // https://stackoverflow.com/questions/19459687/understanding-nvd3-x-axis-date-format
      chart.xAxis
         .tickFormat(function(d) {
             return d3.time.format('%H:%M')(new Date(d*1000))
           });
-          
-    chart.margin({"left":30,"right":30,"top":5,"bottom":50});
+
+     chart.yAxis
+        .tickFormat(function(d) {
+          return d+XLABEL
+        }
+     );
+
+    chart.margin({"left":35,"right":35,"top":5,"bottom":50});
 
     // create graph
     d3.select('#'+ID)
