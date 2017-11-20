@@ -136,6 +136,10 @@ module Compute
         ips_hash[network_name] = ips.each_with_object({}) do |ip_data, mac_address_ips|
           mac_addr = ip_data['OS-EXT-IPS-MAC:mac_addr']
           ip_type = ip_data['OS-EXT-IPS:type']
+          # FIXME: below poor man's approach will possibly break add/remove FIP:
+          # additional ip with same mac gets new key
+          # better: make it an array. why need to build this hash in the first place?
+          # mac_addr += '!' if mac_address_ips.key?(mac_addr) && mac_address_ips[mac_addr].key?(ip_type)
           mac_address_ips[mac_addr] ||= {}
           mac_address_ips[mac_addr][ip_type] = ip_data
         end.values

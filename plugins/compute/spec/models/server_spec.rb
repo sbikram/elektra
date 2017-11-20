@@ -36,6 +36,32 @@ describe Compute::Server do
       })
   }
 
+  let(:server2) {
+    Compute::Server.new(nil, addresses:
+      {
+        'Network A' => [
+          {
+            'OS-EXT-IPS-MAC:mac_addr' => 'fa:16:3e:36:6d:9e',
+            'version' => 4,
+            'addr' => '10.180.0.41',
+            'OS-EXT-IPS:type' => 'fixed'
+          },
+          {
+            'OS-EXT-IPS-MAC:mac_addr' => 'fa:16:3e:36:6d:9e',
+            'version' => 4,
+            'addr' => '10.180.0.42',
+            'OS-EXT-IPS:type' => 'fixed'
+          },
+          {
+            'OS-EXT-IPS-MAC:mac_addr' => 'fa:16:3e:36:6d:9e',
+            'version' => 4,
+            'addr' => '10.180.0.43',
+            'OS-EXT-IPS:type' => 'fixed'
+          }
+        ]
+      })
+  }
+
   describe '#add_floating_ip_to_addresses' do
     it 'responds to add_floating_ip_to_addresses' do
       expect(server).to respond_to(:add_floating_ip_to_addresses)
@@ -130,6 +156,10 @@ describe Compute::Server do
 
     it 'map of Network 2 contains one entry' do
       expect(server.ips['Network 2'].length).to eq(1)
+    end
+
+    it 'map of Network A with same mac contains three entries' do
+      expect(server2.ips['Network A'].length).to eq(3)
     end
 
     context 'Floating IP is assigned' do
