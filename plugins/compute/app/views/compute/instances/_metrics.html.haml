@@ -1,11 +1,13 @@
 %svg#cpu_usage_average{style: "height:200px; width:868px"}
 %svg#mem_usage_average{style: "height:200px; width:868px"}
+%svg#net_usage{style: "height:200px; width:868px"}
 
 :javascript
 
   var metric_defs = [
     {'id':'cpu_usage_average','xaxis':'%'},
-    {'id':'mem_usage_average','xaxis':'%'}
+    {'id':'mem_usage_average','xaxis':'%'},
+    {'id':'net_usage','xaxis':'kb/s'}
   ];
   
   $(function(){
