@@ -6,14 +6,6 @@ GIT
     elektra-extension (0.0.1)
 
 GIT
-  remote: https://github.com/flystack/misty.git
-  revision: 445caa53f5ef77f9bc33df095bcfb2eca7682fb1
-  branch: master
-  specs:
-    misty (1.1.0)
-      json (>= 1.8.3, < 3)
-
-GIT
   remote: https://github.com/sapcc/arc-client.git
   revision: 5d9b922d3c19d02f0cd87c7cc93f80802a960b50
   specs:
@@ -44,7 +36,8 @@ GIT
 
 GIT
   remote: https://github.com/sapcc/misty-cc.git
-  revision: ee0b9a490300b8d0198d028582f2a424b04aa042
+  revision: 5773be98db1c6ca0a11553e4b5d625c3f7dd7cc0
+  branch: maia_integration
   specs:
     misty-cc (0.1.3)
       misty (>= 1.2.0)
