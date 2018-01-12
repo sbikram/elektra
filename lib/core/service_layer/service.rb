@@ -6,7 +6,7 @@ module Core
     # each service in app/services/service_layer should inherit from this class.
     # It provides the context of current user
     class Service
-      attr_accessor :services
+      attr_accessor :services, :current_user
       attr_reader :elektron, :region
 
       def initialize(elektron)

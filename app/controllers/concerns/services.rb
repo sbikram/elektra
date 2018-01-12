@@ -23,6 +23,8 @@ module Services
                  end
     @token_expires_at = token_expires_at
     @services = Core::ServiceLayer::ServicesManager.new(api_client)
+    @services.current_user = current_user
+    @services
   end
 
   def service_user
