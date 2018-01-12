@@ -4,13 +4,13 @@ module Networking
   # Implements Security Group actions
   class SecurityGroupsController < DashboardController
     def index
-      @security_groups = services_ng.networking.security_groups(
+      @security_groups = services.networking.security_groups(
         tenant_id: @scoped_project_id
       )
 
       @quota_data = []
       if current_user.is_allowed?("access_to_project")
-        @quota_data = services_ng.resource_management.quota_data(
+        @quota_data = services.resource_management.quota_data(
           current_user.domain_id || current_user.project_domain_id,
           current_user.project_id,
           [
@@ -23,13 +23,13 @@ module Networking
     end
 
     def new
-      @security_group = services_ng.networking.new_security_group(
+      @security_group = services.networking.new_security_group(
         tenant_id: @scoped_project_id
       )
     end
 
     def create
-      @security_group = services_ng.networking.new_security_group(
+      @security_group = services.networking.new_security_group(
         (params[:security_group] || {}).merge(tenant_id: @scoped_project_id)
       )
       @security_group.save
@@ -45,11 +45,11 @@ module Networking
     end
 
     def edit
-      @security_group = services_ng.networking.find_security_group(params[:id])
+      @security_group = services.networking.find_security_group(params[:id])
     end
 
     def update
-      @security_group = services_ng.networking.new_security_group(
+      @security_group = services.networking.new_security_group(
         (params[:security_group] || {}).merge(tenant_id: @scoped_project_id)
       )
       @security_group.id = params[:id]
@@ -66,8 +66,8 @@ module Networking
     end
 
     def show
-      @security_group = services_ng.networking.find_security_group(params[:id])
-      @rules = services_ng.networking.security_group_rules(
+      @security_group = services.networking.find_security_group(params[:id])
+      @rules = services.networking.security_group_rules(
         security_group_id: @security_group.id
       )
       # @security_groups = {}
@@ -77,7 +77,7 @@ module Networking
       #       @security_groups[rule.remote_group_id] = @security_group
       #     else
       #       @security_groups[rule.remote_group_id] =
-      #         services_ng.networking.find_security_group(rule.remote_group_id)
+      #         services.networking.find_security_group(rule.remote_group_id)
       #     end
       #   end
       #   if @security_groups[rule.remote_group_id]
@@ -92,7 +92,7 @@ module Networking
             hash[rule.remote_group_id] = @security_group
           else
             hash[rule.remote_group_id] =
-              services_ng.networking.find_security_group(rule.remote_group_id)
+              services.networking.find_security_group(rule.remote_group_id)
           end
         end
         rule.remote_group_name = hash[rule.remote_group_id].name
@@ -100,7 +100,7 @@ module Networking
 
       @quota_data = []
       if current_user.is_allowed?("access_to_project")
-        @quota_data = services_ng.resource_management.quota_data(
+        @quota_data = services.resource_management.quota_data(
           current_user.domain_id || current_user.project_domain_id,
           current_user.project_id,
           [
@@ -114,7 +114,7 @@ module Networking
     end
 
     def destroy
-      @security_group = services_ng.networking.new_security_group
+      @security_group = services.networking.new_security_group
       @security_group.id = params[:id]
 
       unless @security_group.destroy

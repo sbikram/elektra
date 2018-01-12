@@ -32,16 +32,7 @@ class InstallNodeService
     messages = []
 
     # get the compute instance
-    instance = begin
-      compute_service.find_server(instance_id)
-    rescue Core::ServiceLayer::Errors::ApiError => e
-      case e.type
-        when 'NotFound'
-          nil
-        else
-          raise e
-      end
-    end
+    instance = compute_service.find_server(instance_id)
 
     # check if we got an instance
     if instance.nil?

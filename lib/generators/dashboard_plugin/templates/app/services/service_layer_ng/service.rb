@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module ServiceLayerNg
+module ServiceLayer
 
-  class %{PLUGIN_NAME}Service < Core::ServiceLayerNg::Service
+  class %{PLUGIN_NAME}Service < Core::ServiceLayer::Service
 
     def available?(action_name_sym=nil)
       true

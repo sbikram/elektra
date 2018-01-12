@@ -5,7 +5,7 @@ module ServiceLayer
   class AutomationService < Core::ServiceLayer::Service
     attr_reader :client
 
-    def available?(action_name_sym=nil)
+    def available?(_action_name_sym = nil)
       !arc_service_endpoint.blank? && !automation_service_endpoint.blank?
     end
 
@@ -131,6 +131,5 @@ module ServiceLayer
     def automation_execute(automation_id, selector)
       automation_run_service.new(nil, {automation_id: automation_id, selector: selector})
     end
-
   end
 end

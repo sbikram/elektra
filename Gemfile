@@ -40,7 +40,6 @@ gem 'net-ssh'
 gem 'netaddr'
 
 gem 'misty', git: 'https://github.com/sapcc/misty.git', branch: :master
-gem 'fog-openstack', git: 'https://github.com/sapcc/fog-openstack.git', branch: :master
 
 # api client (replacement for misty and fog)
 gem 'elektron', git: 'https://github.com/sapcc/elektron'

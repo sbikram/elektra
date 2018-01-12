@@ -15,12 +15,12 @@ describe Networking::Networks::PrivateController, type: :controller do
 
   before :each do
     stub_authentication
-    allow_any_instance_of(ServiceLayerNg::NetworkingService)
+    allow_any_instance_of(ServiceLayer::NetworkingService)
       .to receive(:api).and_return(
         double('api', networking: double('networking').as_null_object)
       )
 
-    allow_any_instance_of(ServiceLayerNg::ResourceManagementService)
+    allow_any_instance_of(ServiceLayer::ResourceManagementService)
       .to receive(:quota_data).and_return([])
   end
 

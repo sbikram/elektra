@@ -64,32 +64,6 @@ class DashboardController < ::ScopeController
     end
   end
 
-  rescue_from 'Core::ServiceLayer::Errors::ApiError' do |error|
-    if error.response_data &&
-       error.response_data['error'] &&
-       error.response_data['error']['code'] == 403
-      render_exception_page(
-        error,
-        title: 'Permission Denied',
-        description: error.response_data['error']['message'] ||
-                     'You are not authorized to request this page.'
-      )
-    elsif (error.response_data &&
-        error.response_data['error'] &&
-        error.response_data['error']['code'] == 404) || error.type == 'NotFound'
-      render_exception_page(
-        error,
-        title: 'Object not Found',
-        sentry: false,
-        warning: true,
-        description: "The object you're looking for doesn't exist. \
-        Please verify your input."
-      )
-    else
-      render_exception_page(error, title: 'Backend Service Error')
-    end
-  end
-
   rescue_from 'Excon::Error::Unauthorized',
               'MonsoonOpenstackAuth::Authentication::NotAuthorized' do
     redirect_to monsoon_openstack_auth.login_path(
@@ -98,7 +72,7 @@ class DashboardController < ::ScopeController
     )
   end
 
-  rescue_from 'Core::Api::Error', 'Elektron::Errors::ApiResponse' do |exception|
+  rescue_from 'Elektron::Errors::ApiResponse' do |exception|
     options = {
       title: exception.code_type, description: :message,
       warning: true, sentry: false
@@ -238,23 +212,24 @@ class DashboardController < ::ScopeController
   def find_users_by_name
     name = params[:name] || params[:term] || ''
     users = UserProfile.search_by_name(name).to_a.uniq(&:name)
-    render json: users.collect do |u|
+    users = users.collect do |u|
       { id: u.full_name, name: u.name, full_name: u.full_name, email: u.email }
     end
+    render json: users.to_json
   end
 
   def find_cached_domains
     name = params[:name] || params[:term] || ''
     domains = FriendlyIdEntry.search('Domain', nil, name)
-    render json: domains.collect { |d| { id: d.key, name: d.name } }.to_json
+    domains = domains.collect { |d| { id: d.key, name: d.name } }
+    render json: domains.to_json
   end
 
   def find_cached_projects
     name = params[:name] || params[:term] || ''
     projects = FriendlyIdEntry.search('Project', @scoped_domain_id, name)
-    render json: projects.collect do |project|
-      { id: project.key, name: project.name }
-    end.to_json
+    projects = projects.collect { |prj| { id: prj.key, name: prj.name } }
+    render json: projects.to_json
   end
 
   def two_factor_required?
@@ -332,7 +307,7 @@ class DashboardController < ::ScopeController
     end
     return if @active_project && @active_project.name == @scoped_project_name
 
-    @active_project = services_ng.identity.find_project(
+    @active_project = services.identity.find_project(
       @scoped_project_id, subtree_as_ids: true, parents_as_ids: true
     )
     FriendlyIdEntry.update_project_entry(@active_project)
